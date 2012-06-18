@@ -32,6 +32,12 @@ class phantomjs($version = "1.5.0" ) {
         require     => Exec["extract-${filename}"],
     }
     
+    file { "/usr/bin/phantomjs" :
+        target => "${phantom_bin_path}/bin/phantomjs",
+        ensure => link,
+        require     => Exec["extract-${filename}"],
+    }
+    
     exec { "nuke-old-version-on-upgrade" :
         command => "rm -Rf /opt/phantomjs /usr/local/bin/phantomjs",
         unless => "test -f /usr/local/bin/phantomjs && /usr/local/bin/phantomjs --version | grep ${version}",
